@@ -29,7 +29,7 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           submodules: recursive
@@ -46,7 +46,7 @@ jobs:
       - name: Generate Nightly Changleog
         id: nightly-changelog
         if: steps.target.outputs.run == 'true' && steps.target.outputs.type == 'nightly'
-        uses: heinrichreimer/github-changelog-generator-action@v2.3
+        uses: heinrichreimer/github-changelog-generator-action@v2.4
         with:
           bugLabels: IGNOREBUGS
           excludeLabels: "stale,duplicate,question,invalid,wontfix,discussion,no changelog"
@@ -59,7 +59,7 @@ jobs:
       - name: Generate Release Changelog
         id: release-changelog
         if: steps.target.outputs.run == 'true' && steps.target.outputs.type != 'nightly'
-        uses: heinrichreimer/github-changelog-generator-action@v2.3
+        uses: heinrichreimer/github-changelog-generator-action@v2.4
         with:
           bugLabels: IGNOREBUGS
           excludeLabels: "stale,duplicate,question,invalid,wontfix,discussion,no changelog"
@@ -116,7 +116,7 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ needs.update-changelogs.outputs.ref }}
       - name: Trigger build
@@ -151,7 +151,7 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ needs.update-changelogs.outputs.ref }}
       - name: Trigger build
@@ -186,7 +186,7 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ needs.update-changelogs.outputs.ref }}
       - name: Trigger build

@@ -1,4 +1,14 @@
 ## Setup
+[% if entry.integration_type == 'logs' %]
+
+## Prerequisites
+
+[[ entry.setup.prerequisites.description]]
+
+## Configuration
+
+There is no configuration needed for this integration.
+[% else %]
 
 [% if entry.setup.description %]
 [[ entry.setup.description ]]
@@ -44,8 +54,8 @@ Configuration for this specific integration is located in the `[[ entry.setup.co
 [% include 'setup/sample-netdata-config.md' %]
 [% endif %]
 
-You can edit the configuration file using the `edit-config` script from the
-Netdata [config directory](https://github.com/netdata/netdata/blob/master/docs/configure/nodes.md#the-netdata-config-directory).
+You can edit the configuration file using the [`edit-config`](/docs/netdata-agent/configuration/README.md#edit-a-configuration-file-using-edit-config) script from the
+Netdata [config directory](/docs/netdata-agent/configuration/README.md#the-netdata-config-directory).
 
 ```bash
 cd /etc/netdata 2>/dev/null || cd /opt/netdata/etc/netdata
@@ -59,13 +69,13 @@ There is no configuration file.
 [[ entry.setup.configuration.options.description ]]
 
 [% if entry.setup.configuration.options.list %]
-[% if entry.setup.configuration.options.folding.enabled %]
-{% details summary="[[ entry.setup.configuration.options.folding.title ]]" %}
+[% if entry.setup.configuration.options.folding.enabled and not clean %]
+{% details open=true summary="[[ entry.setup.configuration.options.folding.title ]]" %}
 [% endif %]
 | Name | Description | Default | Required |
 |:----|:-----------|:-------|:--------:|
 [% for item in entry.setup.configuration.options.list %]
-| [[ item.name ]] | [[ item.description ]] | [[ item.default ]] | [[ item.required ]] |
+| [[ strfy(item.name) ]] | [[ strfy(item.description) ]] | [[ strfy(item.default_value) ]] | [[ strfy(item.required) ]] |
 [% endfor %]
 
 [% for item in entry.setup.configuration.options.list %]
@@ -76,7 +86,7 @@ There is no configuration file.
 
 [% endif %]
 [% endfor %]
-[% if entry.setup.configuration.options.folding.enabled %]
+[% if entry.setup.configuration.options.folding.enabled and not clean %]
 {% /details %}
 [% endif %]
 [% elif not entry.setup.configuration.options.description %]
@@ -91,18 +101,19 @@ There are no configuration options.
 
 [[ example.description ]]
 
-[% if example.folding.enabled %]
-{% details summary="[[ entry.setup.configuration.examples.folding.title ]]" %}
+[% if example.folding.enabled and not clean %]
+{% details open=true summary="[[ entry.setup.configuration.examples.folding.title ]]" %}
 [% endif %]
 ```yaml
 [[ example.config ]]
 ```
-[% if example.folding.enabled %]
+[% if example.folding.enabled and not clean %]
 {% /details %}
 [% endif %]
 [% endfor %]
 [% else%]
 There are no configuration examples.
 
+[% endif %]
 [% endif %]
 [% endif %]

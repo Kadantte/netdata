@@ -1,13 +1,3 @@
-<!--
-title: "Install Netdata on offline systems"
-description: "Install the Netdata Agent on offline/air gapped systems to benefit from real-time, per-second monitoring without connecting to the internet."
-custom_edit_url: "https://github.com/netdata/netdata/edit/master/packaging/installer/methods/offline.md"
-sidebar_label: "Offline systems"
-learn_status: "Published"
-learn_rel_path: "Installation/Installation methods"
-sidebar_position: 50
--->
-
 # Install Netdata on offline systems
 
 Our kickstart install script provides support for installing the Netdata Agent on air-gapped systems which do not have a
@@ -31,13 +21,13 @@ be as a regular user from any internet connected system that has the following t
 To prepare the offline installation source, simply run:
 
 ```bash
-wget -O /tmp/netdata-kickstart.sh https://my-netdata.io/kickstart.sh && sh /tmp/netdata-kickstart.sh --prepare-offline-install-source ./netdata-offline
+wget -O /tmp/netdata-kickstart.sh https://get.netdata.cloud/kickstart.sh && sh /tmp/netdata-kickstart.sh --prepare-offline-install-source ./netdata-offline
 ```
 
 or
 
 ```bash
-curl https://my-netdata.io/kickstart.sh > /tmp/netdata-kickstart.sh && sh /tmp/netdata-kickstart.sh --prepare-offline-install-source ./netdata-offline
+curl https://get.netdata.cloud/kickstart.sh > /tmp/netdata-kickstart.sh && sh /tmp/netdata-kickstart.sh --prepare-offline-install-source ./netdata-offline
 ```
 
 > The exact name used for the directory does not matter, you can specify any other name you want in place of `./netdata-offline`.
@@ -53,7 +43,6 @@ Once you have prepared the offline install source, you need to copy the offline 
 target system. This can be done in any manner you like, as long as filenames are not changed.
 
 After copying the files, simply run the `install.sh` script located in the
-offline install source directory. It accepts all the [same options as the kickstart
-script](https://github.com/netdata/netdata/blob/master/packaging/installer/methods/kickstart.md#optional-parameters-to-alter-your-installation) for further
+offline install source directory. It accepts all the [same options as the kickstart script](/packaging/installer/methods/kickstart.md#optional-parameters-to-alter-your-installation) for further
 customization of the installation, though it will default to not enabling automatic updates (as they are not
 supported on offline installs).

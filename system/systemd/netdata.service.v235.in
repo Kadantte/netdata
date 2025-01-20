@@ -1,11 +1,13 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 [Unit]
-Description=Real time performance monitoring
+Description=infrastructure monitoring and troubleshooting, transformed
 
 # append here other services you want netdata to wait for them to start
-After=network.target httpd.service squid.service nfs-server.service mysqld.service mysql.service named.service postfix.service chronyd.service
+After=network.target network-online.target nss-lookup.target
+Wants=network-online.target nss-lookup.target
 
 [Service]
+LogNamespace=netdata
 Type=simple
 User=root
 EnvironmentFile=-/etc/default/netdata

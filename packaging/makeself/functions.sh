@@ -6,10 +6,22 @@
 # allow running the jobs by hand
 [ -z "${NETDATA_BUILD_WITH_DEBUG}" ] && export NETDATA_BUILD_WITH_DEBUG=0
 [ -z "${NETDATA_INSTALL_PATH}" ] && export NETDATA_INSTALL_PATH="${1-/opt/netdata}"
-[ -z "${NETDATA_MAKESELF_PATH}" ] && NETDATA_MAKESELF_PATH="$(dirname "${0}")/../.."
-[ "${NETDATA_MAKESELF_PATH:0:1}" != "/" ] && NETDATA_MAKESELF_PATH="$(pwd)/${NETDATA_MAKESELF_PATH}"
-[ -z "${NETDATA_SOURCE_PATH}" ] && export NETDATA_SOURCE_PATH="${NETDATA_MAKESELF_PATH}/../.."
-export NETDATA_MAKESELF_PATH NETDATA_MAKESELF_PATH
+[ -z "${NETDATA_MAKESELF_PATH}" ] && NETDATA_MAKESELF_PATH="$(
+    self=${0}
+    while [ -L "${self}" ]
+    do
+        cd "${self%/*}" || exit 1
+        self=$(readlink "${self}")
+    done
+    cd "${self%/*}" || exit 1
+    cd ../.. || exit 1
+    echo "$(pwd -P)/${self##*/}"
+)"
+[ -z "${NETDATA_SOURCE_PATH}" ] && NETDATA_SOURCE_PATH="$(
+    cd "${NETDATA_MAKESELF_PATH}/../.." || exit 1
+    pwd -P
+)"
+export NETDATA_MAKESELF_PATH NETDATA_SOURCE_PATH
 export NULL=
 
 # make sure the path does not end with /
@@ -52,7 +64,7 @@ fetch() {
     # Check SHA256 of gzip'd tar file (apparently alpine's sha256sum requires
     # two empty spaces between the checksum and the file's path)
     set +e
-    echo "${sha256}  ${NETDATA_MAKESELF_PATH}/tmp/${tar}" | sha256sum -c -s
+    echo "${sha256}  ${NETDATA_MAKESELF_PATH}/tmp/${tar}" | sha256sum --c --status
     local rc=$?
     if [ ${rc} -ne 0 ]; then
         echo >&2 "SHA256 verification of tar file ${tar} failed (rc=${rc})"
